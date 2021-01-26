@@ -30,3 +30,18 @@ def tanh_prime(x):
     """
     # print(x, x**2)
     return 1.0 - x ** 2
+
+def relu(x):
+    """
+    The relu activation function.
+    """
+    return np.maximum(0,x)
+
+def relu_prime(x):
+    """
+    The first derivative of the relu function x
+    """
+    # print(x, x**2)
+    # return 1.0 - x ** 2
+    return np.greater(x, 0).astype(int)
+

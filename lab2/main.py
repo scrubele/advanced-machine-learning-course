@@ -3,7 +3,7 @@ import numpy as np
 from network import Network
 from layers.dense_layer import DenseLayer
 from layers.activation_layer import ActivationLayer
-from functions.activation_functions import tanh, sigmoid
+from functions.activation_functions import tanh, sigmoid, relu
 from functions.losses import MeanSquareError
 
 
@@ -23,10 +23,16 @@ class XORNetwork(Network):
     def create_network(self):
         input_nodes = 2
         output_nodes = 1
-        self.add(DenseLayer(input_nodes, 3))
-        self.add(ActivationLayer(sigmoid))
+        self.add(DenseLayer(input_nodes, 2))
+        self.add(ActivationLayer(relu))
+        self.add(DenseLayer(2, 5))
+        self.add(ActivationLayer(relu))
+        self.add(DenseLayer(5, 3))
+        self.add(ActivationLayer(relu))
+        # self.add(DenseLayer(3, 2))
+        # self.add(ActivationLayer(sigmoid))
         self.add(DenseLayer(3, output_nodes))
-        self.add(ActivationLayer(sigmoid))
+        self.add(ActivationLayer(relu))
 
     def predict(self, input_data):
         result = super(XORNetwork, self).predict(input_data)
@@ -47,9 +53,22 @@ class XORNetwork(Network):
     def test(self):
         result = self.predict(self.x_train)
         # print("result", result)
+        return result
 
 
 if __name__ == "__main__":
-    xor_network = XORNetwork(epochs=5000, learning_rate=0.1)
-    xor_network.train()
-    xor_network.test()
+    xor_network = XORNetwork(epochs=500, learning_rate=0.02)
+    wished_result = [0.0,1.0,1.0,0.0]
+    isResult = False
+    time = 0
+    while(not isResult):
+        print("Time "+str(time))
+        xor_network.train()
+        result = xor_network.test()
+        if(isResult==wished_result):
+            isResult=True
+        print("----")
+        time+=1
+        if time>2:
+            isResult = True
+
